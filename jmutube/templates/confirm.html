@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<form method="post" action="" enctype="multipart/form-data">
+    
+<div>{{ message|escape }}</div>
+    
+<input type="submit" name="SubmitButton" value="Submit" />
+
+<a href="{% url jmutube.media.media type %}">Cancel</a>
+</form>
+
+{% endblock %}

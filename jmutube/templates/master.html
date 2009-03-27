@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+
+<title>JMUtube - A Service of the Center for Instructional Technology</title>
+
+
+<link href="/static/css/typography.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/static/css/layout.css" rel="stylesheet" type="text/css" media="screen">
+
+<link href="/static/admin/css/forms.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/static/jquery/jquery-ui-themeroller.css" rel="stylesheet" type="text/css" media="screen">
+<script type="text/javascript" src="/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+</head>
+
+<body>
+
+
+	<div id="banner">
+	
+		<h1>JMUtube</h1>
+	
+		<h2>Express Yourself. Or Someone Else.</h2>
+
+	</div>
+
+
+	
+	<div id="headerNav">
+	
+		<h2><a href="/">JMUtube Home</a></h2>
+	
+		<h3><a href="http://cit.jmu.edu">A CIT@JMU Website</a></h3>
+	
+	</div>
+
+	
+	
+	<div id="navigation">
+		<ul>
+			<li>{% if user.is_authenticated %}
+                	Hello {{ user.first_name }} {{user.last_name}}                          
+                {% else %}
+                    Hello, Guest
+                {% endif %}
+            </li>
+			<li><a href="{% url jmutube.media.media "video" %}">My Files</a></li>
+			<li><a href="/help/">Help</a></li>
+			<li>{% if user.is_authenticated %}
+					<a href="{% url django.contrib.auth.views.logout %}">Sign Out</a>
+				{% else %}
+					<a href="{% url jmutube.media.media "video" %}">Sign In</a>
+				{% endif %}
+			</li>
+							
+		</ul>
+		
+	</div>
+	
+{% block sidebar %}
+
+<style type="text/css">
+#main {
+   margin-right: 200px;
+   min-width: inherit;
+    }
+</style>
+
+
+	<div id="sidebar">
+    
+        <h4>About &bull; <span>JMUtube</span></h4>
+        <p>JMUtube is for the faculty and staff of JMU to store and deliver audio, video, pictures, presentations and more. You can learn more on the <a href="help.html">Help</a> page or get started by accessing <a href="{% url jmutube.media.media "video" %}">your files</a>.</p>
+        <h4>Site &bull; <span>Status</span></h4>
+        <p>Presentation support added as of Dec 4th, 2008.</p>
+        
+
+    	<h4>About &bull; <span>CIT</span></h4>
+		
+		<div class="vcard">
+		
+		<a class="fn org url" href="http://cit.jmu.edu">Center for Instructional Technology</a>
+		
+		<div class="adr">
+			<div class="street-address">800 S. Main St.</div>
+			<div class="extended-address">MSC 1702</div>
+ 			<span class="locality">Harrisonburg</span>,
+			<span class="region">VA</span>
+			<span class="postal-code">22807</span>
+ 			<div class="country-name">U.S.A.</div>
+		</div>
+		</div>
+		
+    	<h6>Contact:</h6>
+		<p><a href="mailto:saundebn@jmu.edu">Grover Saunders </a></p>
+
+     	<h6>Last Modified: <span>12.4.08</span></h6
+     	
+     	<img src="/static/images/footer_logo_black.gif" alt="JMU Logo" />
+  </div>
+  
+{% endblock %}
+
+
+<div id="main">
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+  {% block content %}
+  {% endblock %}
+
+</div>
+
+</body>
+
+</html>

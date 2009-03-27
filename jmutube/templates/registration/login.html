@@ -1,0 +1,31 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
+
+{% if form.errors %}
+    <p class="error">Sorry, that's not a valid user name or password.</p>
+{% endif %}
+
+<form action="." method="post">
+
+    <label for="username">User name:</label>
+    <input type="text" name="username" value="" id="username" />
+    <label for="password">Password:</label>
+    <input type="password" name="password" value="" id="password" />
+    
+    <input type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next|escape }}" />
+    
+</form>
+    
+<script type="text/javascript">
+
+$(window).bind("load", function() {
+    $("#username").focus();
+})
+
+</script>
+
+{% endblock %}
