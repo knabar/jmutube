@@ -1,0 +1,230 @@
+.progress-bar {
+	background-color: #9999FF;
+	height: 20px;
+	float: left;
+	font-size: xx-small;
+}
+
+.progress-container {
+	width: 300px;
+	height: 20px;
+	border: 1px solid black;
+}
+
+.progress-info {
+	position: absolute;
+}
+
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-image: url(/static/sitebackground.gif);
+	background-repeat: repeat-x;
+}
+#banner {
+	position: absolute;
+	height: 119px;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	background-image: url(/static/logo.jpg);
+	background-repeat: no-repeat;
+}
+
+#toolbar {
+	position: absolute;
+	height: 35px;
+	width: 100%;
+	left: 0px;
+	top: 119px;
+	text-align: center;
+	line-height: 25px;
+}
+#navigation {
+	position: absolute;
+	width: 152px;
+	left: 0px;
+	top: 154px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-right-color: #666666;
+}
+#bodycopy {
+	margin-top: 164px;
+	margin-left: 165px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	color: #000000;
+	font-weight: normal;
+	margin-right: 100px;
+	margin-bottom: 50px;
+}
+#bodycopy p {
+	margin-top: 1px;
+	text-align: justify;
+}
+#footer {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+div#navigation ul {
+	color: #000000;
+	list-style-type: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: -18px;
+	position: relative;
+	width: 100px;
+}
+div#navigation a:link {
+	color: #666666;
+	font-size: 12px;
+	text-decoration: none;
+	font-weight: normal;
+}
+div#navigation a:visited {
+	color: #666666;
+	font-size: 12px;
+	text-decoration: none;
+	font-weight: normal;
+}
+div#navigation a:hover {
+	color: #003366;
+	text-decoration: underline;
+}
+div#navigation a:active {
+	color: #003366;
+	text-decoration: underline;
+}
+div#navigation span {
+	display: none;
+}
+div#toolbar span {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #666666;
+	padding-right: 10px;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+div#toolbar a:link {
+	color: #666666;
+	text-decoration: none;
+}
+div#toolbar a:visited {
+	color: #666666;
+	text-decoration: none;
+}
+div#toolbar a:hover {
+	color: #000000;
+	text-decoration: none;
+}
+div#toolbar a:active {
+	color: #666666;
+	text-decoration: none;
+}
+h3#infomenu {
+	background-image: url(/static/info_menu.gif);
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 117px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+h3#createmenu {
+	background-image: url(/static/create_menu.gif);
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 117px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+h3#implementmenu {
+	background-image: url(/static/implement_menu.gif);
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 117px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+div#footer p {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+}
+div#footer h6 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #333333;
+	margin-bottom: 0px;
+	margin-top: 10px;
+	margin-left: 5px;
+}
+div#footer img {
+	margin-bottom: 0px;
+}
+div#bodycopy h2 {
+	font-size: 1.3em;
+	color: #333333;
+	font-weight: bold;
+}
+div#bodycopy h4 {
+	font-size: 1.1em;
+	color: #333333;
+	margin-bottom: 1px;
+	font-weight: bold;
+}
+a:link {
+	color: #006699;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:visited {
+	color: #006699;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	color: #99CCFF;
+	text-decoration: underline;
+}
+a:active {
+	color: #006699;
+	font-weight: bold;
+	text-decoration: none;
+}
+#banner h1 {
+	display: none;
+}
+#announcement {
+	color: #FFFFFF;
+	background-color: #666666;
+	text-align: justify;
+	border: thin solid #000000;
+	padding: 8px;
+}
+#announcement a {
+	font-weight: bold;
+	color: #CCCCCC;
+}
+/* #bodycopy img {
+	border: thin solid #000000;
+	margin-left: auto;
+	display: block;
+	margin-right: auto;
+}*/
+.caption {
+	font-style: italic;
+	color: #666666;
+	text-align: center;
+	margin-bottom: 7px;
+	display: block;
+	margin-top: 3px;
+}

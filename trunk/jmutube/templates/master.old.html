@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+
+<title>JMUtube - A Service of the Center for Instructional Technology</title>
+
+
+<link href="/static/css/reset.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/static/css/typography.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/static/css/layout.css" rel="stylesheet" type="text/css" media="screen">
+
+<link href="/static/admin/css/forms.css" rel="stylesheet" type="text/css" media="screen">
+<!--<link href="/static/silver.css" rel="stylesheet" type="text/css" media="screen">-->
+<script type="text/javascript" src="/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+</head>
+
+<body>
+
+	<div id="banner">
+	
+	<h1>JMUtube</h1>
+	
+	<h2>Express Yourself. Or Someone Else.</h2>
+
+	</div>
+
+	<div id="toolbar">
+		<ul>
+			<li><a href="/">&nbsp;Home</a></li>
+			<li><a href="{% url jmutube.media.media "video" %}">My Files</a></li>
+			<li><a href="/crass/">&nbsp;CRASS</a></li>
+			<li><a href="/help/">Help</a></li>
+		</ul>
+		
+	</div>
+
+	<div id="sidebar">
+    
+        <h4>About &bull; <span>JMUtube</span></h4>
+        <p>JMtube is for the faculty and staff of JMU to store and deliver audio, video, pictures, presentations and more. You can learn more on the <a href="/help/">Help</a> page</p>
+        <h4>Site &bull; <span>Status</span></h4>
+        <p>Beta version of site is now available to the public. Basic functionality is mostly intact.</p>
+    
+    </div>
+
+<div id="main">
+
+  {% block content %}
+  {% endblock %}
+
+</div>
+
+</body>
+
+</html>
+
+
+<!--
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Faculty Streaming Media @ JMU</title>
+<link href="/static/admin/css/forms.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/static/silver.css" rel="stylesheet" type="text/css" media="screen">
+<script type="text/javascript" src="/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+</head>
+
+<body>
+<div id="banner">
+  <h1>Streaming Media</h1>
+  <h1>James Madison University</h1>
+
+</div>
+<div id="toolbar">
+
+    <span><a href="/">Home</a></span>
+    <span><a href="/accounts/media/">My Account</a></span>
+    <span><a href="/crass/">CRASS</a></span>
+    <span><a href="/faq/">FAQ</a></span>
+    <span><a href="/resources/">Resources</a> </span>
+
+    <span><a href="mailto:saundebn@jmu.edu">Contact Support</a> </span></div>
+
+<div id="navigation">
+  <h3 id="infomenu"><span>Information</span></h3>
+  <ul>
+    <li><a href="/">Home Page</a></li>
+    <li><a href="/help/overview/">Overview</a></li>
+
+    <li><a href="/help/specs/">JMU Specs</a></li>
+  </ul>
+  <h3 id="createmenu"><span>Create</span></h3>
+  <ul>
+    <li><a href="/help/digitizing/">Digitizing</a></li>
+    <li><a href="/help/ripping/">Ripping</a></li>
+    <li><a href="/help/encoding/">Encoding</a></li>
+
+  </ul>
+  <h3 id="implementmenu"><span>Implement</span></h3>
+  <ul>
+    <li><a href="/help/loggingin/">Logging In</a></li>
+    <li><a href="/help/uploading/">Uploading</a></li>
+    <li><a href="/help/linking/">Linking</a> </li>
+
+  </ul>
+  <div id="footer">
+    <img src="/static/footer_logo_black.gif" width="135" height="75" alt="JMU Logo" />
+
+    <h6>Publisher:</h6>
+	<p>Center for Instructional Tech</p>
+	<p>MSC 1702</p>
+	<p>Harrisonburg, VA 22807</p>
+
+	<p>540.568.7061</p>
+    <h6>For Information Contact:</h6>
+	<p><a href="mailto:saundebn@jmu.edu">Grover Saunders </a></p>
+    <h6><a href="http://www.jmu.edu/jmuweb/privacy.shtml" target="_blank">Privacy Statement</a></h6>
+     <h6>Last Modified:</h6>
+	 	 <p>
+
+	   May 15, 2006
+	 </p>
+  </div>
+</div>
+<div id="bodycopy">
+
+    { % block content %}
+    { % endblock %}
+
+</div>
+
+</body>
+</html>
+-->

@@ -1,0 +1,21 @@
+{% extends "master.html" %}
+
+  {% block sidebar%}
+  {% endblock %}
+
+{% block content %}
+
+<ul id="contentTabs">
+    <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
+    <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
+    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>	
+</ul>
+
+{% block mediacontent %}
+
+{% endblock %}
+
+
+
+
+{% endblock %}

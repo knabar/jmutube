@@ -1,0 +1,64 @@
+{% extends "media.html" %}
+
+{% block mediacontent %}
+
+<style>
+
+.file {
+        background-color: white;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border: thin #dddddd solid;
+        background-color: #F7F7F7;
+        width: 250px;
+        padding: 2px;
+}
+
+.filetitle {
+        font-weight: bold;
+}
+
+.file {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        width: 300px;
+}
+
+#files a:visited {
+        color:#74981C;
+}
+
+#files a+a {
+        border-left: thin lightgrey solid;
+        padding-left: 4px;
+}
+
+#files .filesheader {
+        background-color: #b4d64d;
+        font-weight: bold;
+}
+</style>
+
+<table id="files">
+        <tr class="filesheader">
+                <th>Title</th>
+                <th>Size</th>
+        </tr>
+{% for file in files %}
+        <tr>
+                <td><div class="file" id="file_{{ file.id }}">
+                        <span class="filetitle" id="title_{{ file.id }}">{{ file.title|escape }}</span></div>
+                        <a href="{% url jmutube.media.media_delete "presentations",file.file %}">Delete</a> 
+                        <a href="{% url jmutube.media.media_rename "presentations",file.file %}">Rename</a>
+                        <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}.content/" target="_blank">Preview</a>
+                        <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}.content/" target="_blank">Link</a>
+                        <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}" target="_blank">Download</a>
+                </td>
+                <td>{{ file.size|filesizeformat }}</td>
+        </tr>
+{% endfor %}
+</table>
+
+<p>To link to your presentation, right-click on <strong>Link</strong> and choose <strong>Copy Shortcut</strong> or <strong>Copy Link</strong>.</p>
+
+{% endblock %}
