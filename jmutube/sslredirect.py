@@ -17,12 +17,13 @@ class SSLRedirect:
         else:
             secure = False
 
-        if not secure == self._is_secure(request):
-            return self._redirect(request, secure)
+        if settings.SSL_PORT:
+            if not secure == self._is_secure(request):
+                return self._redirect(request, secure)
 
     def _is_secure(self, request):
         if request.is_secure():
-	    return True
+            return True
 
         #Handle the Webfaction case until this gets resolved in the request.is_secure()
         if 'HTTP_X_FORWARDED_SSL' in request.META:
