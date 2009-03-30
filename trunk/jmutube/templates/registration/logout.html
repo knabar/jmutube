@@ -1,5 +1,15 @@
 {% extends "master.html" %}
 
+{% block javascript %}
+<script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/static/jquery/jquery.cookie.js"></script>
+<script type="text/javascript">
+$(window).bind("load", function() {
+    $.cookie('playlist', null, { path: '/' });
+})
+</script>
+{% endblock %}
+
 {% block content %}
 
 You have successfully logged out.

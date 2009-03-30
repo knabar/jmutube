@@ -110,7 +110,7 @@
 }
 
 #getlinkdialog h6 {
-		margin-top: 0px;
+        margin-top: 0px;
         margin-bottom: 10px;
         width: 450px;
         margin-left: 105px;
@@ -308,7 +308,7 @@ function save_playlist_to_cookie()
                         cookie += ";" + id + "," + escape(title) + "," + deliveryoptions + "," + delivery;
                 }
         }
-        $.cookie('playlist',cookie);
+        $.cookie('playlist', cookie, { path: '/' });
 }
 
 function restore_playlist_from_cookie()

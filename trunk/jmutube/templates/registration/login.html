@@ -1,8 +1,17 @@
 {% extends "master.html" %}
 
-{% block content %}
-
+{% block javascript %}
 <script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/static/jquery/jquery.cookie.js"></script>
+<script type="text/javascript">
+$(window).bind("load", function() {
+    $.cookie('playlist', null, { path: '/' });
+    $("#username").focus();
+})
+</script>
+{% endblock %}
+
+{% block content %}
 
 {% if form.errors %}
     <p class="error">Sorry, that's not a valid user name or password.</p>
@@ -19,13 +28,5 @@
     <input type="hidden" name="next" value="{{ next|escape }}" />
     
 </form>
-    
-<script type="text/javascript">
-
-$(window).bind("load", function() {
-    $("#username").focus();
-})
-
-</script>
 
 {% endblock %}
