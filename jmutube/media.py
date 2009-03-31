@@ -15,7 +15,8 @@ import shutil
 
 @login_required
 def media(request, type):
-    files = File.objects.filter(user=request.user, type=type)
+    files = File.objects.filter(user=request.user, type=type). \
+        extra(select={'upper_title': 'upper(title)'}, order_by=['upper_title'])
     return render_to_response(os.path.join('media', type + '.html'),
                               { 'type': type, 'files': files },
                               context_instance = RequestContext(request))
