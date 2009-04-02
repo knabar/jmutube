@@ -16,7 +16,8 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', logout, {'template_name': 'registration/logout.html'}),
     (r'^accounts/media/upload/$', upload_file),
     (r'^accounts/media/upload/progress/$', upload_progress),
-    (r'^accounts/media/(video|audio|images|crass|presentations)/$', media),
+    url(r'^accounts/media/(video|audio|images|crass|presentations)/$', media, name="all-media"),
+    url(r'^accounts/media/(video|audio|images|crass|presentations)/([^/]+)/$', media, name="tagged-media"),
     (r'^accounts/media/(video|audio|images|crass|presentations)/([^/]+)/delete/$', media_delete),
     (r'^accounts/media/(video|audio|images|crass|presentations)/([^/]+)/rename/$', media_rename),
     (r'^accounts/media/(video|audio|images|crass|presentations)/([^/]+)/preview/$', media_preview),
@@ -28,9 +29,11 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/(.*)', admin.site.root, {'SSL': True}),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', {'packages': 'django.conf'}),
+    
+    (r'^impersonate/', include('impersonate.urls')),
 )
 
 if settings.DEBUG:
     urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'D:/dev/djprojects/site/jmutube/static'}),
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '../static'}),
     )

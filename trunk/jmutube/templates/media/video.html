@@ -1,10 +1,10 @@
 {% extends "media.html" %}
+{% load tagging_tags %}
+
+
 
 {% block mediacontent %}
 
-<script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
-<script type="text/javascript" src="/static/jquery-ui-personalized-1.5.2.min.js"></script>
-<script type="text/javascript" src="/static/jquery/jquery.cookie.js"></script>
 
 <form method="post" action="">
 
@@ -133,19 +133,28 @@
 
 <table id="files">
         <tr class="filesheader">
+                <th><input type="checkbox" name="checkall" id="checkall" /></th>
                 <th>Title</th>
                 <th>Size</th>
                 <th>Delivery</th>
         </tr>
 {% for file in files %}
         <tr>
-                <td><div class="file" id="file_{{ file.id }}">
+                <td><input type="checkbox" name="file" value="{{ file.id }}" class="filecheck" /></td>
+                <td>
+                    <div class="file" id="file_{{ file.id }}">
                         <span class="filetitle" id="title_{{ file.id }}">{{ file.title|escape }}</span></div>
                         <a href="{% url jmutube.media.media_delete "video",file.file %}">Delete</a> 
                         <a href="{% url jmutube.media.media_rename "video",file.file %}">Rename</a> 
                         <a href="javascript:void(0)" onclick="window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed={% url jmutube.repository.views.single_file_rss_feed user.username,file.file %}&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no');false;">Preview</a> 
                         <a href="http://jmutube.cit.jmu.edu/flashvideo/{{ user.username }}/{{ file.type }}/{{ file.file }}">Link</a> 
                         <a href="javascript:void(0)" onclick="$('#playlistitems').append(new_playlist_item_from_id('{{ file.id }}'))">Add to playlist</a>
+                        <div>
+                        {% tags_for_object file as file_tags %}
+                        {% for tag in file_tags %}
+                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span> 
+                        {% endfor %}
+                        </div>                        
                 </td>
                 <td>{{ file.size|filesizeformat }}</td>
                 <td><span id="delivery_{{ file.id }}">{{ file.get_delivery_display }}</span></td>

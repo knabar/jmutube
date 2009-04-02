@@ -3,6 +3,22 @@ body {
 	margin: 0px;
 }
 
+
+
+
+.tag {
+    background-color: #B4D64D;
+    padding: 2px;
+    line-height: 1.7em;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.tag a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
 #banner {
 	background-repeat: repeat-x;
 	left: 0px;

@@ -90,6 +90,8 @@ INSTALLED_APPS = (
     'jmutube.repository',
     'jmutube.crass',
     'jmutube.ffmpeg',
+    'tagging',
+    'impersonate',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -100,6 +102,7 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.debug',
+    'django.core.context_processors.request',
 )
 
 LOGIN_REDIRECT_URL = '/accounts/media/'
