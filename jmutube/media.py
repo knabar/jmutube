@@ -12,13 +12,29 @@ import jmutube.settings
 from jmutube.util import *
 from jmutube.repository.models import *
 import shutil
+from tagging.models import Tag, TaggedItem
 
 @login_required
-def media(request, type):
-    files = File.objects.filter(user=request.user, type=type). \
+def media(request, type, tag=None):
+    
+    if request.method == 'POST':
+        tag = request.POST.get('tag').replace('"', '')
+        ids = map(int, filter(None, request.POST.get('files').split(',')))
+        if tag and ids:
+            for file in File.objects.filter(user=request.user, type=type, id__in=ids):
+                Tag.objects.add_tag(file, '"' + tag + '"')
+        return HttpResponseRedirect('.')
+    
+    if tag:
+        files = TaggedItem.objects.get_by_model(File, '"' + tag + '"')
+    else:
+        files = File.objects
+    
+    files = files.filter(user=request.user, type=type). \
         extra(select={'upper_title': 'upper(title)'}, order_by=['upper_title'])
+    tags = Tag.objects.usage_for_model(File, filters={'user': request.user, 'type': type})
     return render_to_response(os.path.join('media', type + '.html'),
-                              { 'type': type, 'files': files },
+                              { 'type': type, 'files': files, 'tags': tags },
                               context_instance = RequestContext(request))
 
 @login_required

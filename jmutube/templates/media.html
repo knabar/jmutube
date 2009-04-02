@@ -3,6 +3,52 @@
 {% block sidebar%}
 {% endblock %}
 
+{% block javascript %}
+<script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/static/jquery-ui-personalized-1.5.2.min.js"></script>
+<script type="text/javascript" src="/static/jquery/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+    $(window).bind("load", function() {
+        
+        $("#checkall").click(function() {
+            $(".filecheck").attr("checked", this.checked);
+        });
+        
+        $("#tagfiles").val("");
+        
+        $("#tagfiles").change(function() {
+            $("#files").val("");
+            $(".filecheck").each(function(i, c) {
+                if (c.checked) $("#files").val($("#files").val() + "," + c.value);
+            });            
+            var tag = $("#tagfiles").val();
+            if ($("#tagfiles").attr("selectedIndex") == 1)
+                tag = prompt("Please enter new tags for the selected files:");
+            if (tag)
+            {
+                $("#tag").val(tag);
+                $("#taggingform").submit();
+            }
+        });
+        
+        $("a.removetag").click(function(a,b,c) {
+            var tagnode = this.parentNode;
+            var id = tagnode.id.substring(4, tagnode.id.indexOf('-', 4));
+            var tag = tagnode.id.substring(tagnode.id.indexOf('-', 4) + 1)
+            
+            $.ajax({ data: { id: id, tag: tag },
+                dataType: "json",
+                error: function(req, status, error) { alert("Could not remove tag: " + status + " " + error); },
+                success: function(data, status) { $("#" + tagnode.id).remove(); },
+                type: "POST",
+                url: "{% url jmutube.repository.views.delete_tag user.username %}"
+                });
+        });
+    });
+</script>
+
+{% endblock %}
 
 {% block content %}
 
@@ -12,11 +58,31 @@
     <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>	
 </ul>
 
+<form id="taggingform" method="POST" action=".">
+<input type="hidden" name="tag" id="tag" value="" />
+<input type="hidden" name="files" id="files" value="" />
+
+<div style="background-color: #DDDDDD; width: 800px; padding: 5px; margin-bottom: 10px;">
+    Filter:
+        <span><a href="{% url all-media type %}">Show All</a></span>
+    {% for tag in tags %}
+        <span class="tag"><a href="{% url tagged-media type tag.name %}">{{ tag.name }}</a></span>
+    {% endfor %}
+    
+    Tag selected files:
+    <select id="tagfiles" name="tagfiles">
+        <option value=""></option>
+        <option>New tag...</option>
+        {% for tag in tags %}
+        <option>{{ tag }}</option>
+        {% endfor %}
+    </select>
+</div>
+</form>
+
 {% block mediacontent %}
 
 {% endblock %}
-
-
 
 
 {% endblock %}

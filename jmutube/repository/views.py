@@ -13,6 +13,7 @@ from datetime import datetime
 import jmutube.settings
 from jmutube.util import *
 from models import *
+from tagging.models import Tag, TaggedItem
 
 def playlist_rss_feed(request, user, title):
     playlist = get_object_or_404(Playlist, Q(urltitle = title) | Q(id = title), user__username = user)
@@ -141,3 +142,22 @@ def delete_playlist(request, user):
     
     return HttpResponse(json)
 
+
+
+def delete_tag(request, user):
+    
+    if request.user.username != user:
+        raise Http404
+    
+    fileid = int(request.POST['id'])
+    tag = request.POST['tag']
+
+    file = get_object_or_404(File, user__username=user, id=fileid)
+
+    TaggedItem.objects.filter(object_id=file.id, tag__name=tag).delete()
+
+    json = simplejson.dumps(
+        {'message': 'Tag deleted'}
+    )
+    
+    return HttpResponse(json)

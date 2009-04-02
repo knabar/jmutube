@@ -1,3 +1,4 @@
+{% load impersonate_tags %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,7 +51,7 @@
                 	Hello {{ user.first_name }} {{user.last_name}}                          
                 {% else %}
                     Hello, Guest
-                {% endif %}
+                {% endif %}                
             </li>
 			<li><a href="{% url jmutube.media.media "video" %}">My Files</a></li>
 			<li><a href="/help/">Help</a></li>
@@ -62,7 +63,7 @@
 			</li>
 							
 		</ul>
-		
+		{% impersonation_form %}
 	</div>
 	
 {% block sidebar %}

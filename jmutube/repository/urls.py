@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     (r'^([^/]+)/playlists/json', playlists_json),
     (r'^([^/]+)/store_playlist', store_playlist),
     (r'^([^/]+)/delete_playlist', delete_playlist),
+    (r'^([^/]+)/delete_tag', delete_tag),
 )
