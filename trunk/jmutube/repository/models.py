@@ -4,6 +4,7 @@ import os.path
 import jmutube.settings
 from jmutube.util import *
 from jmutube.jmu_authentication import user_authenticated
+from impersonate.functions import user_impersonated
 
 FILE_TYPES = {
     'video': ('*.mp4', '*.flv', '*.mov',),
@@ -129,3 +130,4 @@ def check_filesystem_on_login(sender, **kwargs):
     sync_with_filesystem(username)
     
 user_authenticated.connect(check_filesystem_on_login)
+user_impersonated.connect(check_filesystem_on_login)
