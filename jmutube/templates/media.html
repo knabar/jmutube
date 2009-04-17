@@ -58,6 +58,7 @@
     <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>	
 </ul>
 
+{% if type %}
 <form id="taggingform" method="POST" action=".">
 <input type="hidden" name="tag" id="tag" value="" />
 <input type="hidden" name="files" id="files" value="" />
@@ -79,6 +80,7 @@
     </select>
 </div>
 </form>
+{% endif %}
 
 {% block mediacontent %}
 
