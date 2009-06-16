@@ -20,6 +20,7 @@
 
 import sys
 import zipfile
+import zlib
 import os
 import os.path
 import getopt
@@ -33,7 +34,8 @@ class unzip:
         if not dir.endswith(':') and not os.path.exists(dir):
             os.mkdir(dir)
 
-        zf = zipfile.ZipFile(file)
+        src = open(file, 'rb')
+        zf = zipfile.ZipFile(src)
 
         # create directory structure to house files
         self._createstructure(file, dir)
@@ -44,7 +46,8 @@ class unzip:
         perc = int(num_files / divisions)
 
         # extract files to directory structure
-        for i, name in enumerate(zf.namelist()):
+        for i, m in enumerate(zf.infolist()):
+            name = m.filename
 
             if self.verbose == True:
                 print "Extracting %s" % name
@@ -53,11 +56,34 @@ class unzip:
                 print "%s%% complete" % complete
 
             if not name.endswith('/'):
-                outfile = open(os.path.join(dir, name), 'wb')
-                outfile.write(zf.read(name))
-                outfile.flush()
-                outfile.close()
+                
+                src.seek(m.header_offset)
+                src.read(30) # Good to use struct to unpack this.
+                nm = src.read(len(m.filename))
+                if len(m.extra) > 0:
+                    ex = src.read(len(m.extra))
+                if len(m.comment) > 0:
+                    cm = src.read(len(m.comment)) 
+            
+                # Build a decompression object
+                decomp = zlib.decompressobj(-15)
+            
+                # This can be done with a loop reading blocks
+                out = open(os.path.join(dir, m.filename), "wb")
+                remain = m.compress_size
+                while remain:
+                    bytes = src.read(min(remain, 1024 * 1024))
+                    result = decomp.decompress(bytes)
+                    remain -= len(bytes)
+                    out.write(result)
+                result = decomp.flush()
+                out.write(result)
+                # end of the loop
+                out.close()
 
+        zf.close()
+        src.close()
+        
 
     def _createstructure(self, file, dir):
         self._makedirs(self._listdirs(file), dir)

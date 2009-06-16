@@ -18,6 +18,7 @@ from jmutube.util import *
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 
+
 def unzip_archive(file):
     dirname = file + ".content"
     unzip(verbose=False).extract(file, dirname)
@@ -37,7 +38,7 @@ def unzip_archive(file):
 
 def handle_uploaded_file(f, username, type):
     (base, ext) = f.name.rsplit('.', 1)
-    name = make_unique(username, type, re.sub(r'[^\w]+', '_', base), ext)
+    name = make_unique(username, type, re.sub(r'[^\w]+', '_', base), ext.lower())
     destination = open(name, 'wb+')
     for chunk in f.chunks():
         destination.write(chunk)
@@ -47,7 +48,7 @@ def handle_uploaded_file(f, username, type):
         unzip_archive(name)
 
 def determine_type(filename):
-    ext = "*" + os.path.splitext(filename)[1]
+    ext = "*" + os.path.splitext(filename)[1].lower()
     for type in FILE_TYPES:
         if ext in FILE_TYPES[type]:
             return type
