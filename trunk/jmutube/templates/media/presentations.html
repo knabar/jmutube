@@ -51,17 +51,17 @@
                 <td><input type="checkbox" name="file" value="{{ file.id }}" class="filecheck" /></td>
                 <td><div class="file" id="file_{{ file.id }}">
                         <span class="filetitle" id="title_{{ file.id }}">{{ file.title|escape }}</span></div>
-                        <a href="{% url jmutube.media.media_delete "presentations",file.file %}">Delete</a> 
+                        <a href="{% url jmutube.media.media_delete "presentations",file.file %}">Delete</a>
                         <a href="{% url jmutube.media.media_rename "presentations",file.file %}">Rename</a>
                         <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}.content/" target="_blank">Preview</a>
                         <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}.content/" target="_blank">Link</a>
                         <a href="http://jmutube.cit.jmu.edu/users/{{ user.username }}/presentations/{{ file.file}}" target="_blank">Download</a>
-                        <div>
+                        <div class="tags-line">
                         {% tags_for_object file as file_tags %}
                         {% for tag in file_tags %}
-                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span> 
+                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span>
                         {% endfor %}
-                        </div>    
+                        </div>
                 </td>
                 <td>{{ file.size|filesizeformat }}</td>
         </tr>
