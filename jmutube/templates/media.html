@@ -63,12 +63,8 @@
 <input type="hidden" name="tag" id="tag" value="" />
 <input type="hidden" name="files" id="files" value="" />
 
-<div style="background-color: #DDDDDD; width: 800px; padding: 5px; margin-bottom: 10px;">
-    Filter:
-        <span><a href="{% url all-media type %}">Show All</a></span>
-    {% for tag in tags %}
-        <span class="tag"><a href="{% url tagged-media type tag.name %}">{{ tag.name }}</a></span>
-    {% endfor %}
+<div style="background-color: #DDDDDD; padding: 5px; margin-bottom: 10px;">
+
     
     Tag selected files:
     <select id="tagfiles" name="tagfiles">
@@ -78,6 +74,13 @@
         <option>{{ tag }}</option>
         {% endfor %}
     </select>
+    
+    
+    Show Only:
+        <span><a href="{% url all-media type %}">All Tags</a>&nbsp;&nbsp; </span>
+    {% for tag in tags %}
+        <span class="tag"><a href="{% url tagged-media type tag.name %}">{{ tag.name }}</a></span>
+    {% endfor %}
 </div>
 </form>
 {% endif %}
