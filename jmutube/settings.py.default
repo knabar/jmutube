@@ -108,3 +108,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGIN_REDIRECT_URL = '/accounts/media/'
 
 FFMPEG_EXECUTABLE = "C:/Documents and Settings/knab2ar/Desktop/ffmpeg-15394/ffmpeg.exe"
+
+# six hour session timeout
+SESSION_COOKIE_AGE = 6 * 3600

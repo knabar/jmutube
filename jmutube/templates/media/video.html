@@ -6,7 +6,7 @@
 {% block mediacontent %}
 
 
-<form method="post" action="">
+<form method="post" action="" id="pageform">
 
 <style>
 .playlistitemcontainer {
@@ -340,6 +340,9 @@ function restore_playlist_from_cookie()
 }
 
 $(window).bind("load", function() {
+    
+        $("#pageform").submit(function() { return false; });
+    
         update_playlists();
         $("#playlistitems").sortable({update: function(){ playlist_modified = true; }});
         $(".file").draggable({helper: 'clone'});

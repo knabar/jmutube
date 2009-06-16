@@ -8,8 +8,8 @@ from impersonate.functions import user_impersonated
 
 FILE_TYPES = {
     'video': ('*.mp4', '*.flv', '*.mov',),
-    'audio': ('*.mp3',),
-    'images': ('*.jpg', '*.png', '*.gif',),
+#    'audio': ('*.mp3',),
+#    'images': ('*.jpg', '*.png', '*.gif',),
     'presentations': ('*.zip',),
     'crass': (),
 }
@@ -19,10 +19,10 @@ MIME_TYPES = {
     '.m4v': 'video/x-m4v',
     '.mov': 'video/quicktime',
     '.flv': 'video/x-flv',
-    '.mp3': 'audio/mpeg',
-    '.jpg': 'image/jpeg',
-    '.png': 'image/png',
-    '.gif': 'image/gif',
+#    '.mp3': 'audio/mpeg',
+#    '.jpg': 'image/jpeg',
+#    '.png': 'image/png',
+#    '.gif': 'image/gif',
     '.zip': 'application/zip',
 }
 
