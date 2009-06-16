@@ -19,7 +19,7 @@
    and vertical margins are automatically calculated from this. 
    The percentage is of 16px (0.75 * 16px = 12px). */
    
-body { font-size: 75%; }
+body { font-size: 80%; }
 
 
 /* Default fonts and colors. 
@@ -29,7 +29,7 @@ body { font-size: 75%; }
    
 body {
 	color: #333333;
-	font-family: "Helvetica Neue", "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
 }
 h1,h2,h3,h4,h5,h6 { 
   color: #111; 
@@ -43,7 +43,7 @@ h1,h2,h3,h4,h5,h6 {
 h1,h2,h3,h4,h5,h6 { font-weight: normal; }
 
 h1 { font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
-h2 { font-size: 2em; margin-bottom: 0.75em; }
+h2 { font-size: 2em; margin-bottom: 0.75em; text-decoration: underline;}
 h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
 h4 { font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
 h5 { font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
@@ -55,7 +55,7 @@ h6 { font-size: 1em; font-weight: bold; }
 
 p           { margin: 0 0 1.5em; }
 p.last      { margin-bottom: 0; }
-p img       { float: left; margin: 1.5em 1.5em 1.5em 0; padding: 0; }
+p img       { margin: 1.5em 1.5em 1.5em 0; padding: 0; }
 p img.top   { margin-top: 0; } /* Use this if the image is at the top of the <p>. */
 img         { margin: 0 0 1.5em; }
 
