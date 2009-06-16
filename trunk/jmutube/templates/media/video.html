@@ -150,12 +150,12 @@
                         <a href="javascript:void(0)" onclick="window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed={% url jmutube.repository.views.single_file_rss_feed user.username,file.file %}&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no');false;">Preview</a> 
                         <a href="http://jmutube.cit.jmu.edu/flashvideo/{{ user.username }}/{{ file.type }}/{{ file.file }}">Link</a> 
                         <a href="javascript:void(0)" onclick="$('#playlistitems').append(new_playlist_item_from_id('{{ file.id }}'))">Add to playlist</a>
-                        <div>
+                        <div class="tags-line">
                         {% tags_for_object file as file_tags %}
                         {% for tag in file_tags %}
-                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span> 
+                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span>
                         {% endfor %}
-                        </div>                        
+                        </div>
                 </td>
                 <td>{{ file.size|filesizeformat }}</td>
                 <td><span id="delivery_{{ file.id }}">{{ file.get_delivery_display }}</span></td>
@@ -164,7 +164,7 @@
 </table>
 
 <div id="getlinkdialog">
-      <div><label><a href="" id="pageurllink" target="_blank">Page URL:</a></label><input type="text" readonly="readonly" id="pageurl" /><h6>Copy and paste this URL for others to watch your playlist hosted on JMUtube.</h6></div>        
+      <div><label><a href="" id="pageurllink" target="_blank">Page URL:</a></label><input type="text" readonly="readonly" id="pageurl" /><h6>Copy and paste this URL for others to watch your playlist hosted on JMUtube.</h6></div>
       <div><label><a href="" id="rssfeedurllink" target="_blank">RSS feed URL:</a></label><input type="text" readonly="readonly" id="rssfeedurl" /><h6>This option allows you to deliver your playlist as an iTunes podcast.</h6></div>
       <div><label><a href="" id="htmlcodelink">HTML code:</a></label><textarea wrap="off" readonly="readonly" id="htmltoembed"></textarea><h6>Copy and paste this HTML code to embed your playlist into any web page (including Blackboard).</h6></div>
       <div><label>HTML page:</label><a href="" id="downloadhtmllink" target="_blank">Download HTML page with embedded code</a></div>
