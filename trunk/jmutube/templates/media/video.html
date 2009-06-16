@@ -128,7 +128,8 @@
   <div id="playlistitems"></div>
   <div id="newplaylistitem">Drop new items here</div>
   Title: <input type="text" id="playlisttitle" /> <input type="button" id="saveplaylist" value="Save" /> <br />
-  <a href="javascript:void(0)" onclick="show_playlist_dialog();">Get playlist for your site</a>
+  <a href="#" id="getplaylistlink">Get playlist for your site</a>
+  <span id="savefirstspan" style="display: none;">Save to get playlist for your site</span>
 </div>
 
 <table id="files">
@@ -179,11 +180,24 @@ var playlist_modified = false;
 var playlist_id = 0;
 var drop_counter = 0;
 
+function set_playlist_modified(status) {
+    playlist_modified = status;
+    if (playlist_modified || !playlist_id) {
+        $("#getplaylistlink").hide();
+        $("#savefirstspan").show()
+    }
+    else
+    {
+        $("#getplaylistlink").show();
+        $("#savefirstspan").hide()
+    }
+}
+
 function warn_if_modified()
 {
         if (!playlist_modified || confirm("Your current playlist has unsaved changes that will be discarded."))
         {
-                playlist_modified = false;
+                set_playlist_modified(false);
                 return true;
         }
         else
@@ -198,7 +212,7 @@ function update_playlists() {
 }
 
 function new_playlist_item(id, title, deliveryoptions, delivery, mark_modified) {
-        playlist_modified = playlist_modified || mark_modified;
+        set_playlist_modified(playlist_modified || mark_modified);
         id = id + "_" + drop_counter;
         drop_counter++;
         var c = $("<div/>").attr("class", "playlistitemcontainer").attr("id", "i" + id);
@@ -209,7 +223,7 @@ function new_playlist_item(id, title, deliveryoptions, delivery, mark_modified) 
                 function() { var d = $("#d" + id); d.text(d.text().substring(0, 1) == 'S' ? "Progressive Download" : "Streaming"); })
 
         i.append($("<a/>").attr("class", "removeitem").append("remove").bind("click",
-                function() { c.replaceWith(); playlist_modified = true; }))
+                function() { c.replaceWith(); set_playlist_modified(true); }))
         i.append($("<span/>").attr("class", "filetitle").append(title)).append($("<br/>"));
         i.append(d);
         if (deliveryoptions == 'B') i.append(" ").append(dc);
@@ -240,6 +254,7 @@ function new_playlist() {
         $("#currentplaylisttitle").text("untitled");
         playlist_id = 0;
         $("#deleteplaylist").hide();
+        set_playlist_modified(false);
   }
 }
 
@@ -280,24 +295,21 @@ var htmltoembed_template =
         '</object>';
 */
 function show_playlist_dialog() {
-        if (playlist_id) {
-                var rss = location.protocol + "//" + location.host +
-                        "{% url jmutube.repository.views.playlist_rss_feed user.username,"_id_" %}".replace("_id_", playlist_id);
-                var page = location.protocol + "//" + location.host +
-                        "{% url jmutube.repository.views.playlist_play user.username,"_id_" %}".replace("_id_", playlist_id);
-                $('#rssfeedurl').val(rss);
-                $('#pageurl').val(page);
-                $('#rssfeedurllink').attr("href", rss);
-                $('#pageurllink').attr("href", page);
-                $('#htmltoembed').val(htmltoembed_template.replace(/\{link\}/g, 'rssfeed=' + rss));
-                $('#getlinkdialog').dialog('open');
-                $('#htmlcodelink').bind('click', function() {
-                        window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed='+rss+'&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no'); return false;
-                });
-                $('#downloadhtmllink').attr("href", "{% url jmutube.repository.views.playlist_download user.username,"_id_" %}".replace("_id_", playlist_id));
-        }
-        else
-                alert('Please save your playlist first');
+    var rss = location.protocol + "//" + location.host +
+            "{% url jmutube.repository.views.playlist_rss_feed user.username,"_id_" %}".replace("_id_", playlist_id);
+    var page = location.protocol + "//" + location.host +
+            "{% url jmutube.repository.views.playlist_play user.username,"_id_" %}".replace("_id_", playlist_id);
+    $('#rssfeedurl').val(rss);
+    $('#pageurl').val(page);
+    $('#rssfeedurllink').attr("href", rss);
+    $('#pageurllink').attr("href", page);
+    $('#htmltoembed').val(htmltoembed_template.replace(/\{link\}/g, 'rssfeed=' + rss));
+    $('#getlinkdialog').dialog('open');
+    $('#htmlcodelink').bind('click', function() {
+            window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed='+rss+'&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no'); return false;
+    });
+    $('#downloadhtmllink').attr("href", "{% url jmutube.repository.views.playlist_download user.username,"_id_" %}".replace("_id_", playlist_id));
+    return false;
 }
 
 function save_playlist_to_cookie()
@@ -326,7 +338,7 @@ function restore_playlist_from_cookie()
         if (c) {
                 var v = c.split(";");
                 var p = v[0].split(",");
-                playlist_modified = p[0] == "1";
+                set_playlist_modified(p[0] == "1");
                 playlist_id = p[1];
                 $("#playlisttitle").val(unescape(p[2]))
                 $("#currentplaylisttitle").text(unescape(p[3]))
@@ -342,9 +354,10 @@ function restore_playlist_from_cookie()
 $(window).bind("load", function() {
     
         $("#pageform").submit(function() { return false; });
+        $("#getplaylistlink").click(show_playlist_dialog);
     
         update_playlists();
-        $("#playlistitems").sortable({update: function(){ playlist_modified = true; }});
+        $("#playlistitems").sortable({update: function(){ set_playlist_modified(true); }});
         $(".file").draggable({helper: 'clone'});
         $(".playlistitem").droppable({accept: ".file", drop: function(ev,ui){ $(this).before(new_playlist_item(ui)); }});
         $("#newplaylistitem").droppable({accept: ".file",  drop: function(ev,ui){ $("#playlistitems").append(drop_new_playlist_item(ui)); }});
@@ -381,8 +394,8 @@ $(window).bind("load", function() {
                          error: function(req, status, error) { alert("Could not save playlist: " + status + " " + error); },
                          success: function(data, status) {
                                 alert(data.message);
-                                playlist_modified = false;
                                 playlist_id = data.id;
+                                set_playlist_modified(false);                                
                                 $("#currentplaylisttitle").text(title);
                                 $("#deleteplaylist").show();
                                 update_playlists(); },
@@ -396,7 +409,7 @@ $(window).bind("load", function() {
                         $.ajax({ data: { id: playlist_id },
                          dataType: "json",
                          error: function(req, status, error) { alert("Could not delete playlist: " + status + " " + error); },
-                         success: function(data, status) { playlist_modified = false; new_playlist(); update_playlists(); },
+                         success: function(data, status) { set_playlist_modified(false); new_playlist(); update_playlists(); },
                          type: "POST",
                          url: "{% url jmutube.repository.views.delete_playlist user.username %}"
                          });
