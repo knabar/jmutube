@@ -59,7 +59,7 @@
                         <div class="tags-line">
                         {% tags_for_object file as file_tags %}
                         {% for tag in file_tags %}
-                            <span class="tag" id="tag-{{ file.id }}-{{ tag.name }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span>
+                            <span class="tag" id="tag-{{ file.id }}-{{ tag.id }}">{{ tag.name }} <a class="removetag" href="javascript:void(0)">X</a></span>
                         {% endfor %}
                         </div>
                 </td>

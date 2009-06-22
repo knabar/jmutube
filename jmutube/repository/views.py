@@ -150,11 +150,11 @@ def delete_tag(request, user):
         raise Http404
     
     fileid = int(request.POST['id'])
-    tag = request.POST['tag']
+    tag = int(request.POST['tag'])
 
     file = get_object_or_404(File, user__username=user, id=fileid)
 
-    TaggedItem.objects.filter(object_id=file.id, tag__name=tag).delete()
+    TaggedItem.objects.filter(object_id=file.id, tag__id=tag).delete()
 
     json = simplejson.dumps(
         {'message': 'Tag deleted'}

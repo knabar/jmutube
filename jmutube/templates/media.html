@@ -55,11 +55,12 @@
 <ul id="contentTabs">
     <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
     <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
-    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>	
+    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
+    <li><a href="{% url crass-schedules %}">CRASS</a></li>
 </ul>
 
 {% if type %}
-<form id="taggingform" method="POST" action=".">
+<form id="taggingform" method="POST" action="{{ tag_url }}">
 <input type="hidden" name="tag" id="tag" value="" />
 <input type="hidden" name="files" id="files" value="" />
 
@@ -70,16 +71,26 @@
     <select id="tagfiles" name="tagfiles">
         <option value=""></option>
         <option>New tag...</option>
-        {% for tag in tags %}
+        {% for tag in all_tags %}
         <option>{{ tag }}</option>
         {% endfor %}
     </select>
     
     
-    Show Only:
-        <span><a href="{% url all-media type %}">All Tags</a>&nbsp;&nbsp; </span>
+    Show:
+        <span><a href="{% url all-media type %}">All Files</a>&nbsp;&nbsp; </span>
+        {% if selected_tags %}
+        Selected:
+        {% for tag in selected_tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+        {% if tags %}
+        Additional tags:
+        {% endif %}
+        {% endif %}
+        
     {% for tag in tags %}
-        <span class="tag"><a href="{% url tagged-media type tag.name %}">{{ tag.name }}</a></span>
+        <span class="tag"><a href="{{ tag_url }}tag={{ tag|urlencode }}">{{ tag }}</a></span>        
     {% endfor %}
 </div>
 </form>

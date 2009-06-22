@@ -2,7 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django import forms
-
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+import os
 from jmutube.crass.models import Computer, Schedule, Mapping
 from datetime import date, datetime, timedelta
 """
@@ -60,25 +62,38 @@ class ScheduleForm(forms.ModelForm):
 def view_schedules(request):
     
     if request.method == 'POST':
-        form = ScheduleForm(request.POST)
-        if form.is_valid():
-            schedule = form.save(commit=False)
-            schedule.user = request.user
-            date = form.cleaned_data['date'];
-            start = int(form.cleaned_data['start'])
-            end = int(form.cleaned_data['end'])
-            schedule.start_time = datetime(date.year, date.month, date.day, start / 6, (start % 6) * 10)
-            if (end < start):
-                date = date + timedelta(1)
-            schedule.end_time = datetime(date.year, date.month, date.day, end / 6, (end % 6) * 10)
-            schedule.save()
+        
+        delete_schedule = filter(lambda k: k.startswith('delete_schedule_'), request.POST.keys())
+        if delete_schedule:
+            id = int(delete_schedule[0][16:])
+            Schedule.objects.filter(user__username=request.user.username, id=id).delete()
+            return HttpResponseRedirect(reverse('crass-schedules'))
+        else:   
+            form = ScheduleForm(request.POST)
+            if form.is_valid():
+                schedule = form.save(commit=False)
+                schedule.user = request.user
+                date = form.cleaned_data['date'];
+                start = int(form.cleaned_data['start'])
+                end = int(form.cleaned_data['end'])
+                schedule.start_time = datetime(date.year, date.month, date.day, start / 6, (start % 6) * 10)
+                if (end < start):
+                    date = date + timedelta(1)
+                schedule.end_time = datetime(date.year, date.month, date.day, end / 6, (end % 6) * 10)
+                schedule.save()
+                return HttpResponseRedirect(reverse('crass-schedules'))
         
     else:
         form = ScheduleForm(initial={'start': default_time(), 'end': default_time(1), 'date': default_date()})   
         
     d = datetime.now()-timedelta(7)
-    schedules = Schedule.objects.filter(user__username=request.user.username).filter(start_time__gte=d)
+    schedules = Schedule.objects.filter(user__username=request.user.username, start_time__gte=d)
+    mappings = [dict(time_stamp=m.time_stamp, file=os.path.basename(m.target_file))
+                for m in Mapping.objects.filter(user__username=request.user.username, time_stamp__gte=d)]
 
     return render_to_response("schedules.html",
-                              {'schedules': schedules, 'form': form},
+                              {'schedules': schedules,
+                               'form': form,
+                               'mappings': mappings,
+                               },
                               context_instance = RequestContext(request))

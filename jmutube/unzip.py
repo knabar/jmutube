@@ -25,6 +25,9 @@ import os
 import os.path
 import getopt
 
+
+zlib.MAX_WBITS = 31
+
 class unzip:
     def __init__(self, verbose = False, percent = 10):
         self.verbose = verbose
@@ -56,29 +59,33 @@ class unzip:
                 print "%s%% complete" % complete
 
             if not name.endswith('/'):
-                
                 src.seek(m.header_offset)
                 src.read(30) # Good to use struct to unpack this.
                 nm = src.read(len(m.filename))
                 if len(m.extra) > 0:
                     ex = src.read(len(m.extra))
                 if len(m.comment) > 0:
-                    cm = src.read(len(m.comment)) 
-            
+                    cm = src.read(len(m.comment))
                 # Build a decompression object
                 decomp = zlib.decompressobj(-15)
-            
-                # This can be done with a loop reading blocks
                 out = open(os.path.join(dir, m.filename), "wb")
+
+
                 remain = m.compress_size
                 while remain:
                     bytes = src.read(min(remain, 1024 * 1024))
-                    result = decomp.decompress(bytes)
+                    if m.compress_type == zipfile.ZIP_DEFLATED:
+                        result = decomp.decompress(bytes)
+                    else:
+                        result = bytes
                     remain -= len(bytes)
                     out.write(result)
-                result = decomp.flush()
-                out.write(result)
-                # end of the loop
+                result = decomp.decompress('Z') + decomp.flush()
+                if result:
+                    out.write(result)
+                
+                
+                #out.write(zf.read(name))
                 out.close()
 
         zf.close()

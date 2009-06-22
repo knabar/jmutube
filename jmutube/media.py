@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect
 from django.core.files.uploadhandler import FileUploadHandler
 from django.core.urlresolvers import reverse
+from django.utils.http import urlencode
 from django import forms
 import os, re
 from shutil import rmtree
@@ -15,26 +16,44 @@ import shutil
 from tagging.models import Tag, TaggedItem
 
 @login_required
-def media(request, type, tag=None):
-    
+def media(request, type):
+   
     if request.method == 'POST':
         tag = request.POST.get('tag').replace('"', '')
         ids = map(int, filter(None, request.POST.get('files').split(',')))
         if tag and ids:
             for file in File.objects.filter(user=request.user, type=type, id__in=ids):
                 Tag.objects.add_tag(file, '"' + tag + '"')
-        return HttpResponseRedirect('.')
+        return HttpResponseRedirect(request.path + '?' + request.GET.urlencode())
     
-    if tag:
-        files = TaggedItem.objects.get_by_model(File, '"' + tag + '"')
+    selected_tags = request.GET.getlist('tag')
+
+    tag_url = request.path + "?"
+    if selected_tags:
+        tag_url += urlencode(('tag',t) for t in selected_tags) + "&"
+
+    
+    if selected_tags:
+        files = TaggedItem.objects.get_by_model(File, '"' + '","'.join(selected_tags) + '"') \
+                .filter(user=request.user, type=type).values_list('id', flat=True)
+        # rerun by IDs, otherwise it's not possible to retrieve tags due to bad SQL queries in tagging lib
+        files = File.objects.filter(id__in=files)
     else:
-        files = File.objects
+        files = File.objects.filter(user=request.user, type=type)
+        
+    files = files.extra(select={'upper_title': 'upper(title)'}, order_by=['upper_title'])    
     
-    files = files.filter(user=request.user, type=type). \
-        extra(select={'upper_title': 'upper(title)'}, order_by=['upper_title'])
-    tags = Tag.objects.usage_for_model(File, filters={'user': request.user, 'type': type})
+    tags = filter(lambda t: t not in selected_tags, (t.name for t in Tag.objects.usage_for_queryset(files)))
+    
+    all_tags = (t.name for t in Tag.objects.usage_for_model(File, filters=dict(user=request.user, type=type)))
+    
     return render_to_response(os.path.join('media', type + '.html'),
-                              { 'type': type, 'files': files, 'tags': tags },
+                              { 'type': type,
+                               'files': files,
+                               'tags': sorted(tags, key=lambda t:t.lower()),
+                               'all_tags': sorted(all_tags, key=lambda t:t.lower()),
+                               'tag_url': tag_url,
+                               'selected_tags': sorted(selected_tags, key=lambda t:t.lower()),},
                               context_instance = RequestContext(request))
 
 @login_required
