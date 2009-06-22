@@ -8,5 +8,5 @@ from views import *
 
 
 urlpatterns = patterns('',
-    (r'^$', view_schedules),
+    url(r'^$', view_schedules, name='crass-schedules'),
 )

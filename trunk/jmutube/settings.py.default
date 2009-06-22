@@ -87,9 +87,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    'django.contrib.humanize',
+    'django_extensions',
     'jmutube.repository',
     'jmutube.crass',
     'jmutube.ffmpeg',
+    'jmutube.relay',
     'tagging',
     'impersonate',
 )
@@ -111,3 +114,7 @@ FFMPEG_EXECUTABLE = "C:/Documents and Settings/knab2ar/Desktop/ffmpeg-15394/ffmp
 
 # six hour session timeout
 SESSION_COOKIE_AGE = 6 * 3600
+
+
+CRASS_MISC_FOLDER = 'd:/dev/jmutube/media/misc'
+RELAY_INCOMING_FOLDER = 'd:/dev/jmutube/relay/incoming'
