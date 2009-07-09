@@ -1,0 +1,65 @@
+[
+  {
+    "pk": 1,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "2101",
+      "mac_address": "0016cba6fbb8"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "2102",
+      "mac_address": "0016cbaa9c1a"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "112",
+      "mac_address": "0016cbab3af9"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "2114",
+      "mac_address": "0016cbab3c3b"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "1246",
+      "mac_address": "0016cbab7cba"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "2113",
+      "mac_address": "001ff3469bee"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "crass.computer",
+    "fields": {
+      "building": "Harrison",
+      "room": "1241",
+      "mac_address": "001ff346b300"
+    }
+  }
+]

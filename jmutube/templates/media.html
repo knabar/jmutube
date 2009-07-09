@@ -10,18 +10,18 @@
 
 <script type="text/javascript">
     $(window).bind("load", function() {
-        
+
         $("#checkall").click(function() {
             $(".filecheck").attr("checked", this.checked);
         });
-        
+
         $("#tagfiles").val("");
-        
+
         $("#tagfiles").change(function() {
             $("#files").val("");
             $(".filecheck").each(function(i, c) {
                 if (c.checked) $("#files").val($("#files").val() + "," + c.value);
-            });            
+            });
             var tag = $("#tagfiles").val();
             if ($("#tagfiles").attr("selectedIndex") == 1)
                 tag = prompt("Please enter new tags for the selected files:");
@@ -31,12 +31,12 @@
                 $("#taggingform").submit();
             }
         });
-        
+
         $("a.removetag").click(function(a,b,c) {
             var tagnode = this.parentNode;
             var id = tagnode.id.substring(4, tagnode.id.indexOf('-', 4));
             var tag = tagnode.id.substring(tagnode.id.indexOf('-', 4) + 1)
-            
+
             $.ajax({ data: { id: id, tag: tag },
                 dataType: "json",
                 error: function(req, status, error) { alert("Could not remove tag: " + status + " " + error); },
@@ -56,7 +56,8 @@
     <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
     <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
     <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
-    <li><a href="{% url crass-schedules %}">CRASS</a></li>
+    <li><a href="{% url crass-schedules %}">CRASS Agenda</a></li>
+    <li><a href="{% url relay %}">Relay</a></li>
 </ul>
 
 {% if type %}
@@ -66,7 +67,7 @@
 
 <div style="background-color: #DDDDDD; padding: 5px; margin-bottom: 10px;">
 
-    
+
     Tag selected files:
     <select id="tagfiles" name="tagfiles">
         <option value=""></option>
@@ -75,8 +76,8 @@
         <option>{{ tag }}</option>
         {% endfor %}
     </select>
-    
-    
+
+
     Show:
         <span><a href="{% url all-media type %}">All Files</a>&nbsp;&nbsp; </span>
         {% if selected_tags %}
@@ -88,9 +89,9 @@
         Additional tags:
         {% endif %}
         {% endif %}
-        
+
     {% for tag in tags %}
-        <span class="tag"><a href="{{ tag_url }}tag={{ tag|urlencode }}">{{ tag }}</a></span>        
+        <span class="tag"><a href="{{ tag_url }}tag={{ tag|urlencode }}">{{ tag }}</a></span>
     {% endfor %}
 </div>
 </form>

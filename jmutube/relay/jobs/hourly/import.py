@@ -42,22 +42,37 @@ class Job(HourlyJob):
                 
                 # create zipped version
                 
+                camrec = False
+                
                 zipfilename = os.path.join(settings.RELAY_INCOMING_FOLDER, outfilename)
                 
                 zip = zipfile.ZipFile(zipfilename, 'w', zipfile.ZIP_DEFLATED)
                 for f in files:
                     zip.write(os.path.join(settings.RELAY_INCOMING_FOLDER, f), f.encode('ascii'))
+                    camrec = camrec or f.endswith('.camrec')
                 zip.write(os.path.join(settings.RELAY_INCOMING_FOLDER, file), file)
                 zip.close()
                 
                 # create folder and move everything over
                 
+                def move_or_remove(file, sourcedir, targetdir):
+                    if os.path.exists(os.path.join(targetdir, file)):
+                        print "File %s exists in %s" % (file, targetdir)
+                        os.remove(os.path.join(sourcedir, file))
+                    else:
+                        shutil.move(os.path.join(sourcedir, file), targetdir)
+                
                 outdir = outfile + '.content'
-                os.mkdir(outdir)                
+                if not os.path.exists(outdir):
+                    os.mkdir(outdir)                
                 for f in files:
-                    shutil.move(os.path.join(settings.RELAY_INCOMING_FOLDER, f), outdir)
-                shutil.move(os.path.join(settings.RELAY_INCOMING_FOLDER, file), outdir)
-                shutil.move(zipfilename, outfile)
+                    move_or_remove(f, settings.RELAY_INCOMING_FOLDER, outdir)
+                move_or_remove(file, settings.RELAY_INCOMING_FOLDER, outdir)
+                try:
+                    shutil.move(zipfilename, outfile)
+                except:
+                    print "Cannot move ZIP file %s" % zipfilename
+                    os.remove(zipfilename)
                 
                 # create entry point
                 
@@ -76,9 +91,12 @@ class Job(HourlyJob):
                 # add tags
                 
                 Tag.objects.add_tag(fileobj, 'Relay')
-                                
-                
+                if camrec:
+                    Tag.objects.add_tag(fileobj, 'CamRec')
+                print "done"
             
             except:
-                pass
             
+		raise
+		
+		pass
