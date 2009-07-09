@@ -32,7 +32,7 @@ function update_times(new_start, new_end)
     if (new_start != drop_start) $('#id_start').val(new_start);
     if (new_end != drop_end) $('#id_end').val(new_end);
     if (new_end != slider_end) $('#timerange').slider('moveTo', new_end, 1);
-    if (new_start != slider_start) $('#timerange').slider('moveTo', new_start, 0);    
+    if (new_start != slider_start) $('#timerange').slider('moveTo', new_start, 0);
     in_update_times = false;
 }
 
@@ -97,8 +97,16 @@ background-image:url(/static/slider-bg.png);
 
 {% block content %}
 
+<ul id="contentTabs">
+    <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
+    <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
+    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
+    <li class="selectedTab"><a href="{% url crass-schedules %}">CRASS Agenda</a></li>
+    <li><a href="{% url relay %}">Relay</a></li>
+</ul>
 
-<h2>Schedule a room</h2>
+
+<h3>Schedule A CRASS Recording</h3>
 
 <form method="post" action="">
 <table>
@@ -108,10 +116,13 @@ background-image:url(/static/slider-bg.png);
 <input type="hidden" name="start_time" id="start_time" value="7.1666" />
 <input type="hidden" name="end_time" id="end_time" value="8.1666" />
 
-<div id='timerange' class='ui-slider-2' style="margin: 40px;">
+
+<!-- <div id='timerange' class='ui-slider-2' style="margin: 40px;">
 <div class='ui-slider-handle'></div>
-<div class='ui-slider-handle' style="left: 188px;"></div>	
+<div class='ui-slider-handle' style="left: 188px;"></div>
 </div>
+
+ -->
 
 <input type="submit" value="Submit Schedule" />
 </form>
@@ -168,6 +179,10 @@ background-image:url(/static/slider-bg.png);
 {% endfor %}
 </table>
 
+
+
 {% endif %}
+
+<p><strong>Tip: You can schedule recordings in the past to claim your unscheduled recordings.</strong></p>
 
 {% endblock %}

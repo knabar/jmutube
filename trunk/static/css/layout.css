@@ -410,10 +410,15 @@ body {
 }
 
 #files .tag {
-	background-color: #f7f7f7;
-	padding: 0px;
+	padding-left: 5px;
+	padding-bottom: 0px;
+	padding-right: 5px;
+	padding-top: 0px;
+	background-color: #ededed;
 	margin-right: 3px;
-	border: #CCCCCC 1px solid;
+	border: #d9d9d9 2px solid;
+	margin-bottom: 3px;
+
 }
 
 form#taggingform select {
@@ -430,5 +435,10 @@ form#taggingform select {
 	border-bottom: #CCCCCC 1px solid;
 	border-top: #CCCCCC 1px solid;
 	background-color: #f7f7f7;
+
+}
+
+form {
+	margin-top: 20px;
 
 }

@@ -5,7 +5,9 @@
 <ul id="contentTabs">
     <li><a href="{% url jmutube.media.media "video" %}">Video</a></li>
     <li><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
-    <li class="selectedTab"><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>	
+    <li class="selectedTab"><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
+    <li><a href="{% url crass-schedules %}">CRASS Agenda</a></li>
+    <li><a href="{% url relay %}">Relay</a></li>
 </ul>
 
 <form method="post" action="{% url jmutube.upload.upload_file %}" enctype="multipart/form-data">
@@ -21,13 +23,13 @@ Upload New {{ uploadform }}
 function gen_uuid() {
     var uuid = ""
     for (var i=0; i < 32; i++) {
-        uuid += Math.floor(Math.random() * 16).toString(16); 
+        uuid += Math.floor(Math.random() * 16).toString(16);
     }
     return uuid
 }
 
 $(function() {
-    $('form[@enctype=multipart/form-data]').submit(function(){ 
+    $('form[@enctype=multipart/form-data]').submit(function(){
         if ($.data(this, 'submitted')) return false;
 
         var freq = 1000; // freqency of update in ms
@@ -37,7 +39,7 @@ $(function() {
 
         var $progress = $('#upload-progress')
             .append('<div class="progress-container"><div class="progress-bar">&nbsp;</div><div class="progress-info">Uploading</div></div>');
-        
+
         function update_progress_info() {
             $progress.show();
             $.getJSON(progress_url, {'X-Progress-ID': uuid}, function(data, status){
@@ -76,7 +78,7 @@ $(function() {
 		<li>.zip files produced by Camtasia, Adobe Presenter, or Adobe Captivate.</li>
 		<li>Any zipped website with a file called index.html in the root directory.</li>
 	</ul>
-	</li>		
+	</li>
 </ul>
 <h5>Tip: You can upload .m4v files by changing the extension to .mp4 before you upload.</h5>
 <p>Have an account at <a href="http://streaming.jmu.edu" target="_blank">http://streaming.jmu.edu</a> already? You can import your Flash files from there using our <a href="{% url jmutube.media.migrate_files %}">migration tool</a>.</p>
