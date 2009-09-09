@@ -100,7 +100,7 @@ background-image:url(/static/slider-bg.png);
 <ul id="contentTabs">
     <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
     <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
-    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
+    <li id="upload"><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
     <li class="selectedTab"><a href="{% url crass-schedules %}">CRASS Agenda</a></li>
     <li><a href="{% url relay %}">Relay</a></li>
 </ul>
@@ -134,7 +134,7 @@ background-image:url(/static/slider-bg.png);
 
 {% else %}
 
-<h2>Your current schedules:</h2>
+<h3>Your current schedules:</h3>
 
 <form method="post" action="">
 <table>
