@@ -7,8 +7,8 @@ from jmutube.jmu_authentication import user_authenticated
 from impersonate.functions import user_impersonated
 
 FILE_TYPES = {
-    'video': ('*.mp4', '*.flv', '*.mov',),
-#    'audio': ('*.mp3',),
+    'video': ('*.mp4', '*.flv', '*.mov', '*.m4a'),  # remove .m4a when audio comes online
+#    'audio': ('*.mp3', '*.m4a'),
 #    'images': ('*.jpg', '*.png', '*.gif',),
     'presentations': ('*.zip',),
     'crass': (),

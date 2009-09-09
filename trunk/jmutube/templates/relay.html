@@ -5,14 +5,16 @@
 <ul id="contentTabs">
     <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
     <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
-    <li><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
+    <li id="upload"><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
     <li><a href="{% url crass-schedules %}">CRASS Agenda</a></li>
     <li class="selectedTab"><a href="{% url relay %}">Relay</a></li>
 </ul>
 
 <h3>Camtasia Relay</h3>
 
-<p>Camtasia Relay allows you to make live recordings of your presentations that are automatically converted and uploaded to JMUtube. At present, you must request a Relay account before you can submit your presentations to JMUtube. Contact Grover Saunders by email at <a href="mailto:saundebn@jmu.edu">saundebn@jmu.edu</a> to request an account.</p></p>
+<p>Camtasia Relay allows you to make live recordings of your presentations that are automatically converted and uploaded to JMUtube. After recording and submitting with the Camtasia Relay recording software, your sessions will appear under the Presentations tab in JMUtube within 24 hours (often much less).
+
+<p style="font-size:16px" align="center"><strong><em>You must email <a href="mailto:saundebn@jmu.edu">saundebn@jmu.edu</a> to have your Relay account<br />activated before you will be able to log into the recorder.</em></strong></p>
 
 <p>Click the appropriate link below to download the recording software for your computer. The Portable Recorder can be installed onto a USB flash drive for use in situations where the recording software can't be installed.</p>
 
