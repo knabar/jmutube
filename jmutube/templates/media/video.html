@@ -127,6 +127,7 @@
   <span id="currentplaylisttitle">untitled</span> <input type="button" id="deleteplaylist" value="Delete" style="display: none;"/>
   <div id="playlistitems"></div>
   <div id="newplaylistitem">Drop new items here</div>
+  <div><a href="" id="appendselectedtoplaylist">Append selected items to playlist</a></div>
   Title: <input type="text" id="playlisttitle" /> <input type="button" id="saveplaylist" value="Save" /> <br />
   <a href="#" id="getplaylistlink">Get playlist for your site</a>
   <span id="savefirstspan" style="display: none;">Save to get playlist for your site</span>
@@ -145,10 +146,10 @@
                 <td>
                     <div class="file" id="file_{{ file.id }}">
                         <span class="filetitle" id="title_{{ file.id }}">{{ file.title|escape }}</span></div>
-                        <a href="{% url jmutube.media.media_delete "video",file.file %}">Delete</a> 
-                        <a href="{% url jmutube.media.media_rename "video",file.file %}">Rename</a> 
-                        <a href="javascript:void(0)" onclick="window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed={% url jmutube.repository.views.single_file_rss_feed user.username,file.file %}&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no');false;">Preview</a> 
-                        <a href="http://jmutube.cit.jmu.edu/flashvideo/{{ user.username }}/{{ file.type }}/{{ file.file }}">Link</a> 
+                        <a href="{% url jmutube.media.media_delete file.type,file.file %}">Delete</a>
+                        <a href="{% url jmutube.media.media_rename file.type,file.file %}">Rename</a>
+                        <a href="javascript:void(0)" onclick="window.open('/static/player/jmutube_popout_viewer.html?listidx=0&rssfeed={% url jmutube.repository.views.single_file_rss_feed user.username,file.file %}&timestamp=0&isplaying=true','jmutubepopout','height=408,width=488,toolbar=no,scrollbars=no,directories=no,location=yes,status=no,menubar=no,resizeable=no');false;">Preview</a>
+                        <a href="http://jmutube.cit.jmu.edu/flashvideo/{{ user.username }}/{{ file.type }}/{{ file.file }}">Link</a>
                         <a href="javascript:void(0)" onclick="$('#playlistitems').append(new_playlist_item_from_id('{{ file.id }}'))">Add to playlist</a>
                         <div class="tags-line">
                         {% tags_for_object file as file_tags %}
@@ -267,7 +268,7 @@ var htmltoembed_template =
         '<param name="quality" value="high" />\n' +
         '<param name="scale" value="exactfit" />\n' +
         '<param name="loop" value="false" />\n' +
-        '<param name="FlashVars" value="{link}" />\n' +
+        '<param name="FlashVars" value="{link}?player=jmutube" />\n' +
         '<object data="http://jmutube.cit.jmu.edu/static/player/jmutube.swf" height="400" type="application/x-shockwave-flash" width="480">\n' +
         '<param name="movie" value="http://jmutube.cit.jmu.edu/static/player/jmutube.swf" />\n' +
         '<param name="allowFullScreen" value="true" />\n' +
@@ -275,7 +276,7 @@ var htmltoembed_template =
         '<param name="quality" value="high" />\n' +
         '<param name="scale" value="exactfit" />\n' +
         '<param name="loop" value="false" />\n' +
-        '<param name="FlashVars" value="{link}" />\n' +
+        '<param name="FlashVars" value="{link}?player=jmutube" />\n' +
         '</object>\n' +
         '</object>\n' +
         '</div>';
@@ -352,10 +353,10 @@ function restore_playlist_from_cookie()
 }
 
 $(window).bind("load", function() {
-    
+
         $("#pageform").submit(function() { return false; });
         $("#getplaylistlink").click(show_playlist_dialog);
-    
+
         update_playlists();
         $("#playlistitems").sortable({update: function(){ set_playlist_modified(true); }});
         $(".file").draggable({helper: 'clone'});
@@ -372,7 +373,7 @@ $(window).bind("load", function() {
                 width: 600
         });
         restore_playlist_from_cookie();
-        
+
         $(window).bind("unload", function(event) { save_playlist_to_cookie(); })
 
         $("#saveplaylist").bind("click", function() {
@@ -395,15 +396,15 @@ $(window).bind("load", function() {
                          success: function(data, status) {
                                 alert(data.message);
                                 playlist_id = data.id;
-                                set_playlist_modified(false);                                
+                                set_playlist_modified(false);
                                 $("#currentplaylisttitle").text(title);
                                 $("#deleteplaylist").show();
                                 update_playlists(); },
                          type: "POST",
                          url: "{% url jmutube.repository.views.store_playlist user.username %}"
-                         });        
+                         });
         })
-        
+
         $("#deleteplaylist").bind("click", function() {
                 if (playlist_id != 0 && confirm("Are you sure you want to delete the current playlist?")) {
                         $.ajax({ data: { id: playlist_id },
@@ -415,16 +416,33 @@ $(window).bind("load", function() {
                          });
                 }
         })
-        
+
         $("#newplaylist").bind("click", function() {
           new_playlist();
           return false;
         })
-        
+
+        $("#appendselectedtoplaylist").bind("click", function(event) {
+            event.preventDefault();
+            $(".filecheck:checked").each(function(i,e) {
+                $('#playlistitems').append(new_playlist_item_from_id(e.value))
+                })
+        })
+
+        $(".filecheck").click(function() {
+            var flag = $(".filecheck").is(":checked");
+            if (flag) $("#appendselectedtoplaylist").show(); else $("#appendselectedtoplaylist").hide();
+        })
+        $("#checkall").click(function() {
+            var flag = this.checked;
+            if (flag) $("#appendselectedtoplaylist").show(); else $("#appendselectedtoplaylist").hide();
+        });
+        $("#appendselectedtoplaylist").hide();
+
         $("#selectplaylist").bind("change", function() {
-                var s = $("#selectplaylist"); 
-                if (s.val() == "") return;                       
-                if (warn_if_modified()) {                
+                var s = $("#selectplaylist");
+                if (s.val() == "") return;
+                if (warn_if_modified()) {
                         $("#playlistitems").empty();
                         var u = "{% url jmutube.repository.views.playlist_json user.username,"_id_" %}".replace("_id_", s.val());
                         $.getJSON(u, function(data){
@@ -441,9 +459,9 @@ $(window).bind("load", function() {
                 }
                 s.val("");
         })
-        
+
         $("#getlinkdialog input,#getlinkdialog textarea").bind("click", function(e) {
-                
+
                 e.target.select();
                 })
 

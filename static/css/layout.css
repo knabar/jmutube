@@ -118,7 +118,7 @@ body {
 #navigation li:first-child {
 	color: white;
 	border-left: none;
-	
+
 }
 
 
@@ -128,7 +128,7 @@ body {
 	border-left-width: 1px;
 	border-left-color: black;
 	border-left-style: solid;
-	text-align: center;	
+	text-align: center;
 	padding: 0px 10px 0px 10px;
 	float: left;
 	display: block;
@@ -318,16 +318,16 @@ body {
     width: 100px;
     height: 23px;
     margin: 0px;
-    padding-top: 3px;		
+    padding-top: 3px;
 }
 
 #contentTabs li a {
     color: #91ac4f;
-    text-decoration: none;	
+    text-decoration: none;
 }
 #contentTabs li a:link {
     color: #91ac4f;
-    text-decoration: none;	
+    text-decoration: none;
 }
 #contentTabs li a:visited {
     color: #91ac4f;
@@ -371,12 +371,12 @@ body {
 #delivery_66 {
 	font-weight: bold;
 	letter-spacing: 1px;
-	
+
 }
 
 #twitter_div ul {
 	padding: 0px;
-	
+
 
 }
 
@@ -428,7 +428,7 @@ form#taggingform select {
 
 
 .tags-line {
-	margin-top:5px; 
+	margin-top:5px;
 }
 
 .options_odd {
@@ -441,4 +441,8 @@ form#taggingform select {
 form {
 	margin-top: 20px;
 
+}
+
+#selectplaylist {
+	max-width: 250px;
 }

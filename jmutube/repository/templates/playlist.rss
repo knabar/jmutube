@@ -14,7 +14,7 @@
     <item>
         <title>{{ item.file.title }}</title>
         <description>{{ item.file.title }}</description>
-        <enclosure url="{{ item.url }}" length="{{ item.file.size }}" type="{{ item.file.mime_type }}" />
+        <enclosure url="{% if jmutube_player %}{{ item.jmutube_player_url }}{% else %}{{ item.url }}{% endif %}" length="{{ item.file.size }}" type="{{ item.file.mime_type }}" />
     </item>
 {% endfor %}
 </channel>
