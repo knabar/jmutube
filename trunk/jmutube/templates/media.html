@@ -54,6 +54,7 @@
 
 <ul id="contentTabs">
     <li {% ifequal type "video" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "video" %}">Video</a></li>
+    <li {% ifequal type "audio" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "audio" %}">Audio</a></li>
     <li {% ifequal type "presentations" %}class="selectedTab"{% endifequal %}><a href="{% url jmutube.media.media "presentations" %}">Presentations</a></li>
     <li id="upload"><a href="{% url jmutube.upload.upload_file %}">Upload</a></li>
     <li><a href="{% url crass-schedules %}">CRASS Agenda</a></li>

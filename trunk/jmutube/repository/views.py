@@ -17,27 +17,35 @@ from tagging.models import Tag, TaggedItem
 
 def playlist_rss_feed(request, user, title):
     playlist = get_object_or_404(Playlist, Q(urltitle = title) | Q(id = title), user__username = user)
-        
+
+    jmutube_player = request.GET.get('player') == 'jmutube'
+
     return render_to_response('playlist.rss',
                               { 'title': playlist.title,
                                'user': playlist.user,
                                'url': 'http://jmutube.cit.jmu.edu/',
+                               'jmutube_player': jmutube_player,
                                'playlist': playlist.playlistitem_set.all() },
                               context_instance = RequestContext(request))
 
 def single_file_rss_feed(request, user, file):
     file = get_object_or_404(File, user__username=user, file=file)
-        
+
+    jmutube_player = request.GET.get('player') == 'jmutube'
+
     return render_to_response('playlist.rss',
                               { 'title': file.title,
                                'user': file.user,
                                'url': 'http://jmutube.cit.jmu.edu/',
-                               'playlist': ({'file': file, 'url': file.url },) },
+                               'jmutube_player': jmutube_player,
+                               'playlist': ({'file': file,
+                                             'url': file.url,
+                                             'jmutube_player_url': file.jmutube_player_url },) },
                               context_instance = RequestContext(request))
 
 def playlist_play(request, user, title):
     playlist = get_object_or_404(Playlist, Q(urltitle = title) | Q(id = title), user__username = user)
-        
+
     return render_to_response('playlist.html',
                               { 'title': playlist.title,
                                 'feed': 'http://%s%s' % (request.get_host(), reverse(playlist_rss_feed, args=(user, playlist.id))) },
@@ -45,7 +53,7 @@ def playlist_play(request, user, title):
 
 def playlist_download(request, user, title):
     playlist = get_object_or_404(Playlist, Q(urltitle = title) | Q(id = title), user__username = user)
-        
+
     res = render_to_response('playlist.html',
                               { 'title': playlist.title,
                                 'feed': 'http://%s%s' % (request.get_host(), reverse(playlist_rss_feed, args=(user, playlist.id))) },
@@ -63,7 +71,7 @@ def playlist_json(request, user, title):
         'title': playlist.title,
         'urltitle': playlist.urltitle,
         'files': [{'id': item.file.id,
-                   'user': item.file.user.username,        
+                   'user': item.file.user.username,
                     'title': item.file.title,
                     'file': item.file.file,
                     'url': 'http://test',
@@ -73,33 +81,33 @@ def playlist_json(request, user, title):
                     'delivery': item.delivery,
                     'deliveryoptions': item.file.delivery} for item in playlist.playlistitem_set.all()]
         })
-    
+
     return HttpResponse(json)
 
 def playlists_json(request, user):
-    
+
     if request.user.username != user:
         raise Http404
-    
+
     playlists = Playlist.objects.filter(user__username = user)
-    
+
     json = simplejson.dumps(
         [{'title': playlist.title, 'urltitle': playlist.urltitle} for playlist in playlists]
     )
-    
+
     return HttpResponse(json)
 
 
 def store_playlist(request, user):
-    
+
     if request.user.username != user:
         raise Http404
-    
+
     id = int(request.POST['id'])
     title = request.POST['title']
     items = map(int, request.POST['items'].split(','))
     deliveries = request.POST['delivery'].split(',')
-    
+
     if id == 0:
         playlist = Playlist()
         playlist.user = request.user
@@ -109,46 +117,46 @@ def store_playlist(request, user):
     else:
         playlist = get_object_or_404(Playlist, user=request.user, id=id)
         playlist.title = title
-    
+
     playlist.urltitle = "%s_%s" % (playlist.id, re.sub(r'[^\w]+', '_', title))
     playlist.save()
-    
+
     PlaylistItem.objects.filter(playlist=playlist).delete()
     for (item, delivery) in zip(items, deliveries):
         PlaylistItem(playlist = playlist, file = File.objects.get(user=request.user, id=item), delivery=delivery).save()
-    
+
     json = simplejson.dumps({
         'message': 'Playlist saved',
         'id': playlist.id,
         }
     )
-    
+
     return HttpResponse(json)
 
 
 def delete_playlist(request, user):
-    
+
     if request.user.username != user:
         raise Http404
-    
+
     id = int(request.POST['id'])
-    
+
     playlist = get_object_or_404(Playlist, user=request.user, id=id)
     playlist.delete();
-    
+
     json = simplejson.dumps(
         {'message': 'Playlist deleted'}
     )
-    
+
     return HttpResponse(json)
 
 
 
 def delete_tag(request, user):
-    
+
     if request.user.username != user:
         raise Http404
-    
+
     fileid = int(request.POST['id'])
     tag = int(request.POST['tag'])
 
@@ -159,5 +167,5 @@ def delete_tag(request, user):
     json = simplejson.dumps(
         {'message': 'Tag deleted'}
     )
-    
+
     return HttpResponse(json)
